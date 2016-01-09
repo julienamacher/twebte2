@@ -1,0 +1,58 @@
+<a href="" class="btn btn-info" role="button" ng-click="goBack();">Go back</a>
+
+<h1>Events</h1>
+
+<h4>Latest activity on {{site.name}}</h4>
+<div ng-repeat="(key, eventType) in lastActivity">
+	<strong>{{graphData.series[key]}}</strong>
+	<div ng-repeat="event in eventType">
+		<a href="{{event.link}}">[{{event.creation_date | date:'HH:mm:ss'}}] {{event.excerpt}}</a>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<h3>Latest activity</h3>
+		<canvas class="chart chart-line" chart-data="graphData.data" chart-labels="graphData.labels" chart-legend="true" chart-series="graphData.series" >
+		</canvas>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-6">
+			<center><h3>{{graphData2.series[0][0][0]}}</h3></center>
+			<canvas class="chart chart-bar" chart-data="graphData2.data[0]" chart-labels="graphData2.labels" chart-series="graphData2.series[0]" >
+			</canvas>
+		</div>
+		<div class="col-sm-6">
+			<center><h3>{{graphData2.series[1][0][0]}}</h3></center>
+			<canvas class="chart chart-bar" chart-data="graphData2.data[1]" chart-labels="graphData2.labels" chart-series="graphData2.series[1]" >
+			</canvas>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-6">
+			<center><h3>{{graphData2.series[2][0][0]}}</h3></center>
+			<canvas class="chart chart-bar" chart-data="graphData2.data[2]" chart-labels="graphData2.labels" chart-series="graphData2.series[2]" >
+			</canvas>
+		</div>
+		<div class="col-sm-6">
+			<center><h3>{{graphData2.series[3][0][0]}}</h3></center>
+			<canvas class="chart chart-bar" chart-data="graphData2.data[3]" chart-labels="graphData2.labels" chart-series="graphData2.series[3]" >
+			</canvas>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-6">
+			<center><h3>{{graphData2.series[4][0][0]}}</h3></center>
+			<canvas class="chart chart-bar" chart-data="graphData2.data[4]" chart-labels="graphData2.labels" chart-series="graphData2.series[4]" >
+			</canvas>
+		</div>
+		<div class="col-sm-6">
+			<span ng-show="currentWaitCounter !== -1"><center><h3>{{currentWaitCounter}}</h3></center><center>seconds before next retrieval</center></span>
+			<strong ng-show="currentWaitCounter == -1">Currently retrieving data from API ...</strong>
+		</div>
+	</div>
+</div>
+

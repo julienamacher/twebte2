@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="tweb" ng-controller="headcontroller" ng-cloak>
+	<head >
+		<title>TWEB TE2</title>
+		<style type="text/css">
+		body {
+			padding-top: 10px;
+		}
+		</style>
+		<link rel="stylesheet" ng-href="res/css/bootstrap_{{ layout.url }}.min.css">
+		<link rel="stylesheet" href="res/css/angular-chart.css">
+		<link rel="stylesheet" href="res/css/Lobibox.min.css">
+	</head>
+	<body>
+
+		<div class="form-group" style="float: right; margin-right: 10px; color: black !important; background-color: white: !important;">
+			<select ng-model="layout" ng-options="l as l.name for l in layouts" style="padding-right: 20px;"></select>
+		</div>
+	
+		<div class="container">
+			<div ng-view></div>
+		</div>
+
+		<script src="res/js/frameworks/angular.min.js"></script>
+		<script src="res/js/frameworks/Chart.js"></script>
+		<script src="res/js/frameworks/angular-route.min.js"></script>
+		<script src="res/js/frameworks/angular-chart.js"></script>
+		<script src="res/js/frameworks/jquery.1.11.min.js"></script>
+		<script src="res/js/frameworks/lobibox.min.js"></script>
+		
+		
+		<script src="res/js/custom/main.js"></script>
+		<script src="res/js/custom/home.js"></script>
+		<script src="res/js/custom/events.js"></script>
+		<script src="res/js/custom/headcontroller.js"></script>
+		<script src="res/js/custom/UserDataFactory.js"></script>
+	</body>
+</html>

@@ -1,0 +1,51 @@
+<h1>TWEB TE2</h1>
+
+<h4>Step 1: Authenticate against StackExchange</h4>
+
+<p>
+	Authenticate using a StackExchange account.<br />
+	You can use the following credentials:<br />
+	Email address: <strong>bufokaj@mailzi.ru</strong><br />
+	Password: <strong>vI1J7hBkeCFr<strong><br />
+</p>
+
+<p>
+	<a href="" class="btn btn-info" role="button" ng-click="redirectToStackFormOAuthLogin();">StackExchange login</a>
+</p>
+
+<strong ng-show="apiToken == ''">Next steps will be shown once logged in.</strong>
+
+<div ng-show="apiToken !== ''">
+	<h4>Step 2: Input your client details:</h4>
+	<form ng-submit="onSubmit()" class="simple-form">
+		<div class="form-group">
+			<label for="apiKey">API Key (allows for more requests):</label>
+			<input type="text" name="apiKey" class="form-control" ng-model="apiKey" placeholder="API Key" required />
+		</div>
+		<div class="form-group">
+			<label for="apiToken">API Token (obtained from the previous step, OAuth):</label>
+			<input type="text" name="apiToken" class="form-control" ng-model="apiToken" placeholder="API Token" required />
+		</div>
+		<div class="form-group">
+			<h4>Step 3:Select a website under the StackExchange unbrella below by clicking "Choose", then click "Proceed"</h4>
+		</div>
+		<input type="submit" value="Proceed" class="btn btn-default" />
+	</form>
+
+	<table class="table" ng-show="sites.length > 0">
+		<thead>
+			<tr>
+				<th>Choose</th>
+				<th>Image</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="site in sites">
+				<td><a href="" class="btn btn-info" role="button" ng-click="setSiteToUse(site);">Choose</a></td>
+				<td><img src="{{site.img}}" alt="{{site.name}}" /></td>
+				<td>{{site.name}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
