@@ -7,9 +7,11 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 	// Used to retrieve the excerpt and url attributes
 	var filterId = "!9YdnSFEOX"; 
 
+	// Resets events items before being populated with fresh ones, just retrieved from the API
 	var resetLastActivity = function() {
 		$scope.lastActivity = [[], [], [], [], []];
 	};
+	
 	resetLastActivity();
 
 	// Handle on the interval instance used to periodically retrieve data
@@ -31,6 +33,7 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 	// Counter that decrements. Once at zero, new stats are retrieved.
 	$scope.currentWaitCounter = -1;
 
+	// Used to graph the aggregated data (all events on the same graph)
 	$scope.graphData = {
 		graphOptions: { animationSteps: 5 },
 		labels: [],
@@ -46,6 +49,7 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 			   []]
 	};
 	
+	// Used to display single graphs
 	$scope.graphData2 = {
 		graphOptions: { animationSteps: 5 },
 		labels: [],
@@ -64,6 +68,7 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 		$location.path("/");
 	};
 	
+	// Starts the timer which will decrement the number of seconds remaining before the next retrieval
 	var startCount = function() {
 		$scope.currentWaitCounter = secondsToWait;
 		waitBeforeNextRetrieval = $interval(function() {
@@ -79,6 +84,15 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 		}, 1000);
 	};
 	
+	/*
+	Retrieve events from the API
+	apiKey: api key to use
+	accessToken: authentication token to use (obtained from OAuth)
+	siteNameInApi: name of the site to retrieve data from
+	page: starts at 1
+	recordsPerPage: maximum records per page to retrieve, max is 100
+	sinceTimestamp: only events that happened at a Unix timestamp greater than this will be retrieved
+	*/
 	var retrieveEvents = function(apiKey, accessToken, siteNameInApi, page, recordsPerPage, sinceTimestamp) {
 		$http({
 			method: 'GET',
@@ -119,15 +133,20 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 						break;
 					}
 
+					// Remembering the maximal timestamp value we encountered during the retrieval
 					if (currentItem.creation_date > maxTimestampThisRound) {
 						maxTimestampThisRound = currentItem.creation_date;
 					}
 	
+					// The API might sometimes return a non-integer Unix timestamp. We round it
 					currentItem.creation_date = new Date(Math.floor(currentItem.creation_date * 1000));
+					
+					// Saving the event to display its excerpt and link
 					$scope.lastActivity[index].push(currentItem);
 					$scope.graphData.data[index][maxRecords - 1]++;
 				}
 				
+				// Is there more to retrieve ? If yes then we get the next page
 				if (data.has_more) {
 					retrieveEvents(apiKey, accessToken, siteNameInApi, page + 1, recordsPerPage, sinceTimestamp);
 				} else {
@@ -169,14 +188,8 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 		});
 		
 	};
-	
-	var formatDate = function(dateToFormat) {                                 
-        var month = (dateToFormat.getMonth() + 1).toString();
-        var day  = dateToFormat.getDate().toString();             
-		
-        return dateToFormat.getFullYear().toString() + '-' + (month[1] ? month : "0" + month[0]) + '-' + (day[1] ? day : "0" + day[0]);
-	};
-	
+
+	// Will shift graph data on the left. This will discard the oldest record and make room for the next one on the right.
 	var prepareData = function() {
 		for (var record = 0; record < maxRecords - 1; record++) {
 			for (var i =0; i < 5; i++) {
@@ -189,6 +202,7 @@ tweb.controller('events', function($scope, $http, $location, $interval, UserData
 		}
 	};
 
+	// Wrapper for the retrieveEvents function. This will take care of setting round variables before retrieving data from the API
 	var getRound = function() {
 		valuesRetrieved = {};
 		prepareData();

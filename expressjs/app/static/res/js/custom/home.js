@@ -48,8 +48,10 @@ tweb.controller('home', function($scope, $http, $window, $location, UserDataFact
 
 	$scope.$on('$viewContentLoaded', function() {
 		
+		// Authentication code received from the OAuth process flow
 		var codeFromOAuth = null;
 		
+		// Extracting the authentication code from the url
 		var loc = $window.location.href;
 		var start = loc.indexOf("access_token=");
 		if (start != -1) {
@@ -66,6 +68,7 @@ tweb.controller('home', function($scope, $http, $window, $location, UserDataFact
 			$scope.apiToken = codeFromOAuth
 		}
 
+		// Retrieving all websites managed by StackExchange (StackOverflow, ...)
 		$http({
 			method: 'GET',
 			url: "https://api.stackexchange.com/2.2/sites?((&filter=default",
@@ -93,7 +96,7 @@ tweb.controller('home', function($scope, $http, $window, $location, UserDataFact
 		}).error(function(data, status, headers, config) {
 			Lobibox.alert("error",
 			{
-				"msg": "Could not retrieve sites: http error"
+				"msg": "Could not retrieve sites: HTTP error"
 			});
 		});
 	});

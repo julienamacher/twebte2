@@ -5,18 +5,34 @@ Student: Julien Amacher
 * Application: https://salty-mountain-1788.herokuapp.com
 * Git repository: https://github.com/julienamacher/twebte2
 
+## Technologies
+
+* NodeJS + ExpressJS
+* Bootstrap
+* AngularJS
+* ChartJS
+* StackExchange API
+
+## Before testing the app ...
+
 **Important**: When choosing the website to monitor, please start with StackOverflow,
 since it is the one that sees the most activity. Otherwise you might not see anything for a while.
 
+## Feature
+
 The idea of this project is to display in near real time activity on any website under the StackExchange unbrella.
 
-For this, these two API calls are used against StackExchange:
+## StackExchange API
+
+To implement the feature, these two API calls are used against StackExchange:
   * https://api.stackexchange.com/docs/events : Used to retrieve actual events
   * https://api.stackexchange.com/docs/sites : Used to retrieve all websites managed by StackExchange
 
 In addition, since the /events requires authentication, the implicit OAuth authentication is used to retrieve an anthentication token (https://api.stackexchange.com/docs/authentication)
 
 Considering we will make quite a lot of API calls against the /events endpoint, a `key` will be used. It allows us to have 10k requests per 24 hours (and per key).
+
+## AngularJS
 
 The Angular app will poll the /events endpoint once per minute and will display how many of these events happened, as well as their summaries:
 - Someone posted a question
@@ -40,6 +56,7 @@ When calling the /events endpoint, a `filter` that will add the optional `excerp
 
 You can see here https://api.stackexchange.com/docs/read-filter#filters=!9YdnSFEOX&filter=default&run=true that our filter (!9YdnSFEOX) is configured to display the "event.excerpt" and "event.link" attributes.
 
+### Authentication token
 
 Since we will be using at least one method that requires authentication, we will need to obtain a `token` that we will pass to our requests. This token is obtained once authenticated against StackExchange. To do so, we first have to register a StackApp application :
 
@@ -52,6 +69,8 @@ Since we will be using at least one method that requires authentication, we will
   * a Key, which allows for more quota when querying StackExchange API endpoints (10k/day)
 
 API key is already present in the Angular `home` controller. The `token` is retrieved from the OAuth process.
+
+### Retrieving events
 
 The /events endpoints accepts the following parameters:
 
@@ -116,9 +135,12 @@ A typical response follows:
 If the `has_more attribute` is true, then more API calls should be done to gather all the events created from the specified point in time.
 We can also see our current quota (we already did 10000-9771=229 requests in the last 24 hours)
 
-Events must be retrieved periodially from StackExchange, otherwise they are lost : there is no history an no mean to query for events that are older than 15 minutes.
+Events must be retrieved periodially from StackExchange, otherwise they are lost : there is no history and no mean to query for events that are older than 15 minutes.
 
 The application will count the quantity of each event type (user_created, answer_posted, ...) and display how many of them were seen during the group API call used to retrieve events during the previous 60 seconds.
+
+## Graphing
+
 This data is then used to produce multiple graphs. As configured, only the data gathered during the last 30 minutes is displayed.
 
 Here is the main graph:
