@@ -18,6 +18,8 @@ Student: Julien Amacher
 **Important**: When choosing the website to monitor, please start with StackOverflow,
 since it is the one that sees the most activity. Otherwise you might not see anything for a while.
 
+You might need to login twice if you just authorized the application.
+
 ## Feature
 
 The idea of this project is to display in near real time activity on any website under the StackExchange unbrella.
@@ -165,3 +167,11 @@ Indeed, StackExchange breaks our url by adding one too many `#` :
 https://salty-mountain-1788.herokuapp.com/#/events#access_token=rStfA925LIT3YMw1En%28pEA%29%29&expires=86399
 
 As a workaround, the url is parsed manually to extract the `access token`
+
+## Notifications
+
+A <a href="http://lobianijs.com/site/lobibox">Lobibox</a> notification will display how many notifications have been retrieved:
+
+![Notification](img/notif1.png)
+
+
