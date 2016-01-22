@@ -160,7 +160,7 @@ In addition, the excerpt and link attributes are used to display a list of the l
 ![Excert and links](img/n4.png)
 
 There is a problem regarding the redirection StackExchange does once the user returns to our app.
-Indeed, StackExchange breaks our url by `#` :
+Indeed, StackExchange breaks our url by adding one too many `#` :
 
 https://salty-mountain-1788.herokuapp.com/#/events#access_token=rStfA925LIT3YMw1En%28pEA%29%29&expires=86399
 
